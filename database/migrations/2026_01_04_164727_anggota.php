@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('anggota', function (Blueprint $table){
+        Schema::create('anggota', function (Blueprint $table) {
             $table->id();
             $table->string('nik')->unique();
             $table->string('nama');
@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('pekerjaan');
             $table->unsignedInteger('usia');
             $table->text('alamat');
+            $table->timestamps();
         });
     }
 

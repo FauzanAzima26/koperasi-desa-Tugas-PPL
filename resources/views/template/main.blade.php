@@ -13,8 +13,12 @@
 
     <meta name="description" content="" />
 
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="../../assets/img/favicon/favicon.ico" />
+
+    <link rel="stylesheet" href="../../assets/vendor/libs/sweetalert2/sweetalert2.css" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -29,10 +33,10 @@
 
     <!-- Core CSS -->
 
-    <link rel="stylesheet" href="{{asset('assets/vendor/css/rtl/core.css')}}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/rtl/core.css') }}" class="template-customizer-core-css" />
     <link rel="stylesheet" href="../../assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
 
-    <link rel="stylesheet" href="{{asset('assets/css/demo.css')}}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
 
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="../../assets/vendor/libs/node-waves/node-waves.css" />
@@ -50,6 +54,13 @@
 
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="../../assets/js/config.js"></script>
+
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css" />
+    <link rel="stylesheet" href="../../assets/vendor/libs/flatpickr/flatpickr.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
 </head>
 
 <body>
@@ -73,15 +84,7 @@
                 <div class="content-wrapper">
                     <!-- Content -->
 
-                    <div class="container-xxl flex-grow-1 container-p-y">
-                        <h4 class="py-4 mb-6">Page 1</h4>
-                        <p>
-                            Sample page.<br />For more layout options, <a href="" target="_blank"
-                                class="fw-medium"></a> refer
-                            <a href="https://demos.pixinvent.com/vuexy-html-admin-template/documentation//layouts.html"
-                                target="_blank" class="fw-medium">Layout docs</a>.
-                        </p>
-                    </div>
+                    @yield('content')
                     <!-- / Content -->
 
                     <!-- Footer -->
@@ -107,6 +110,7 @@
     <!-- build:js assets/vendor/js/core.js -->
 
     <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
+
     <script src="../../assets/vendor/libs/popper/popper.js"></script>
     <script src="../../assets/vendor/js/bootstrap.js"></script>
     <script src="../../assets/vendor/libs/node-waves/node-waves.js"></script>
@@ -118,9 +122,14 @@
     <!-- endbuild -->
 
     <!-- Vendors JS -->
-
+    <script src="../../assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js"></script>
     <!-- Main JS -->
     <script src="../../assets/js/main.js"></script>
+
+    <script src="../../assets/vendor/libs/sweetalert2/sweetalert2.js"></script>
+    <script src="../../assets/js/extended-ui-sweetalert2.js"></script>
+
+    @stack('js')
 
     <!-- Page JS -->
 </body>
