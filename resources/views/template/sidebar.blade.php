@@ -40,6 +40,12 @@
                 <div data-i18n="Page 2">Anggota</div>
             </a>
         </li>
+        <li class="menu-item {{ request()->routeIs('transaksi.*') ? 'active' : '' }}">
+            <a href="{{ route('transaksi.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-app-window"></i>
+                <div data-i18n="Page 2">Transaksi</div>
+            </a>
+        </li>
         <li class="menu-item">
             <a href="{{ route('logout') }}" class="menu-link"
                 onclick="event.preventDefault();
