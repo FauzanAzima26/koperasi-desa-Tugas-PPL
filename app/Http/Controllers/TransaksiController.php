@@ -72,7 +72,8 @@ class TransaksiController extends Controller
             'kategori' => 'required|in:simpanan,pinjaman,angsuran,operasional',
             'jumlah' => 'required|numeric|min:0',
             'keterangan' => 'required|string|max:255',
-            'anggota_id' => 'required|exists:anggota,id'
+            'anggota_id' => 'required|exists:anggota,id',
+            'tenor_bulan' => 'nullable|integer|min:1|max:360'
         ]);
 
         $data = $request->only([
@@ -81,7 +82,8 @@ class TransaksiController extends Controller
             'kategori',
             'jumlah',
             'keterangan',
-            'anggota_id'
+            'anggota_id',
+            'tenor_bulan'
         ]);
 
         $data['no_transaksi'] = $noTransaksi;

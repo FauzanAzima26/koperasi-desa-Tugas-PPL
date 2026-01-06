@@ -31,4 +31,9 @@ class Transaksi extends Model
     {
         return $this->belongsTo(Anggota::class, 'anggota_id');
     }
+
+    public function tenorBulan()
+    {
+        return $this->hasOne(Pinjaman::class);
+    }
 }

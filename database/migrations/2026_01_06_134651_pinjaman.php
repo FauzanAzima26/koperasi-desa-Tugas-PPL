@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('anggota_id')->constrained('anggota')->restrictOnDelete();
             $table->foreignId('transaksi_id')->constrained('transaksi')->restrictOnDelete();
             $table->decimal('jumlah_pinjaman', 15, 0);
-            $table->unsignedSmallInteger('tenor_bulan');
+            $table->unsignedSmallInteger('tenor_bulan')->nullable();
             $table->enum('status', ['lunas', 'belum_lunas']);
             $table->timestamps();
         });

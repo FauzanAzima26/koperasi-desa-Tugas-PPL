@@ -46,6 +46,12 @@
                 <div data-i18n="Page 2">Transaksi</div>
             </a>
         </li>
+        <li class="menu-item {{ request()->routeIs('pinjaman.*') ? 'active' : '' }}">
+            <a href="{{ route('pinjaman.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-app-window"></i>
+                <div data-i18n="Page 2">Pinjaman</div>
+            </a>
+        </li>
         <li class="menu-item">
             <a href="{{ route('logout') }}" class="menu-link"
                 onclick="event.preventDefault();

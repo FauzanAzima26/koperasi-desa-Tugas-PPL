@@ -58,6 +58,13 @@
                                     placeholder="Masukan nominal" />
                             </div>
                         </div>
+                        <div class="col mb-0">
+                            <label for="jumlah" class="form-label">Tenor Bulan</label>
+                            <div class="input-group input-group-merge">
+                                <input type="number" id="tenor_bulan" name="tenor_bulan" class="form-control rupiah"
+                                    placeholder="Masukan tenor" />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row g-4">

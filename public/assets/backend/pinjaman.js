@@ -3,7 +3,7 @@
 $(function () {
     var dt_ajax_table = $(".datatables-ajax");
     let storeUrl = $("#formInput").data("store");
-    let updateUrl = "/transaksi";
+    let updateUrl = "/pinjaman";
 
     if (dt_ajax_table.length) {
         var dt_ajax = dt_ajax_table.DataTable({
@@ -17,31 +17,23 @@ $(function () {
                     orderable: false,
                     searchable: false,
                 },
-                { data: "no_transaksi", name: "no_transaksi" },
-                { data: "anggota_id", name: "anggota.name" },
+                { data: "NamaAnggota", name: "NamaAnggota" },
+                { data: "NikAnggota", name: "NikAnggota" },
                 {
-                    data: "tanggal",
-                    name: "tanggal",
+                    data: "NoTransaksi",
+                    name: "NoTransaksi",
                 },
                 {
-                    data: "jenis",
-                    name: "jenis",
+                    data: "JumlahPinjaman",
+                    name: "JumlahPinjaman",
                 },
                 {
-                    data: "kategori",
-                    name: "kategori",
+                    data: "tenor_bulan",
+                    name: "tenor_bulan",
                 },
                 {
-                    data: "jumlah",
-                    name: "jumlah",
-                },
-                {
-                    data: "keterangan",
-                    name: "keterangan",
-                },
-                {
-                    data: "user_id",
-                    name: "user.name",
+                    data: "status",
+                    name: "status",
                 },
                 {
                     data: "aksi",
@@ -70,19 +62,20 @@ $(function () {
     $("#formInput").on("submit", function (e) {
         e.preventDefault();
 
-        let id = $("#hidden_id").val(); // ambil id, kosong = tambah
+        $("#formError").addClass("d-none").text("");
+
+        let id = $("#hidden_id").val();
         let formData = new FormData(this);
 
-        // Ambil URL update dari tombol edit jika ada
         let url = id
             ? $("#formInput").data("update") || updateUrl + "/" + id
             : storeUrl;
 
-        if (id) formData.append("_method", "PUT"); // method spoofing untuk update
+        if (id) formData.append("_method", "PUT");
 
         $.ajax({
             url: url,
-            type: "POST", // selalu POST untuk AJAX + _method
+            type: "POST",
             data: formData,
             processData: false,
             contentType: false,
@@ -103,8 +96,17 @@ $(function () {
                 }
             },
             error: function (xhr) {
+                if (xhr.status === 422) {
+                    $("#formError")
+                        .removeClass("d-none")
+                        .text("Data tidak valid");
+                    return;
+                }
+
                 Swal.fire({
                     title: "Error",
+                    showConfirmButton: false,
+                    showCloseButton: true,
                     text: xhr.responseJSON?.message || "Terjadi kesalahan",
                     icon: "error",
                     showClass: {
@@ -121,16 +123,12 @@ $(function () {
 
         let id = $(this).data("id");
 
-        $.get("/transaksi/" + id, function (res) {
+        $.get("/pinjaman/" + id, function (res) {
             let data = res.data;
 
             $("#hidden_id").val(id);
-            $("#tanggal").val(data.tanggal);
-            $("#jenis").val(data.jenis);
-            $("#kategori").val(data.kategori);
-            $("#jumlah").val(data.jumlah);
-            $("#keterangan").val(data.keterangan);
-            $("#anggota_id").val(data.anggota_id);
+            $("#status").val(data.status);
+            $("#tenor_bulan").val(data.tenor_bulan);
 
             $("#exampleModalLabel5").text("Edit Anggota");
             $("#animationModal").modal("show");
@@ -161,7 +159,7 @@ $(function () {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: "/transaksi/" + id,
+                    url: "/pinjaman/" + id,
                     type: "POST", // method spoofing
                     data: {
                         _method: "DELETE",
