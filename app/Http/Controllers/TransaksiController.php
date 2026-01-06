@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anggota;
 use Pest\Support\Str;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
@@ -15,12 +16,14 @@ class TransaksiController extends Controller
      */
     public function index()
     {
-        return view('transaksi.index');
+        $anggota = Anggota::query()->orderBy('created_at', 'desc')->get();
+
+        return view('transaksi.index', compact('anggota'));
     }
 
     public function getData()
     {
-        $anggota = Transaksi::with('user')->orderBy('created_at', 'desc');
+        $anggota = Transaksi::with('user', 'anggota')->orderBy('created_at', 'desc');
 
         return DataTables::of($anggota)
             ->addIndexColumn()
@@ -31,6 +34,10 @@ class TransaksiController extends Controller
 
             ->editColumn('jumlah', function ($row) {
                 return 'Rp ' . number_format($row->jumlah, 0, ',', '.');
+            })
+
+            ->editColumn('anggota_id', function ($row) {
+                return $row->anggota->nama ?? '-';
             })
 
             ->addColumn('aksi', function ($row) {
@@ -63,6 +70,7 @@ class TransaksiController extends Controller
             'kategori' => 'required|in:simpanan,pinjaman,angsuran,operasional',
             'jumlah' => 'required|numeric|min:0',
             'keterangan' => 'required|string|max:255',
+            'anggota_id' => 'required|exists:anggota,id'
         ]);
 
         $data = $request->only([
@@ -70,7 +78,8 @@ class TransaksiController extends Controller
             'jenis',
             'kategori',
             'jumlah',
-            'keterangan'
+            'keterangan',
+            'anggota_id'
         ]);
 
         $data['no_transaksi'] = $noTransaksi;
@@ -103,6 +112,7 @@ class TransaksiController extends Controller
             'kategori' => 'sometimes|required|in:pinjaman,angsuran,simpanan,operasional',
             'jumlah' => 'sometimes|required|numeric|min:0',
             'keterangan' => 'sometimes|required|string|max:255',
+            'anggota_id' => 'sometimes|required|exists:anggota,id',
         ]);
 
         $anggota = Transaksi::findOrFail($id);
@@ -114,6 +124,7 @@ class TransaksiController extends Controller
                 'kategori',
                 'jumlah',
                 'keterangan',
+                'anggota_id'
             ]),
             fn($v) => $v !== null
         );

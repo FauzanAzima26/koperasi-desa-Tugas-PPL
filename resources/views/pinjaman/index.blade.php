@@ -15,8 +15,7 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>No.Transaksi</th>
-                            <th>Anggota</th>
+                            <th>Peminjam</th>
                             <th>tanggal</th>
                             <th>Jenis</th>
                             <th>Kategori</th>

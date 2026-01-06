@@ -19,10 +19,16 @@ class Transaksi extends Model
         'jumlah',
         'user_id',
         'keterangan',
+        'anggota_id'
     ];
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function anggota()
+    {
+        return $this->belongsTo(Anggota::class, 'anggota_id');
     }
 }

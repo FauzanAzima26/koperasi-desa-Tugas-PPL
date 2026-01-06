@@ -17,15 +17,6 @@
                             <label for="nameAnimation" class="form-label">Tanggal</label>
                             <input type="date" id="tanggal" name="tanggal" class="form-control" />
                         </div>
-                        <div class="col mb-4">
-                            <label for="kategori" class="form-label">Anggota</label>
-                            <select name="anggota_id" id="anggota_id" class="form-select" required>
-                                <option value="">-- Pilih anggota --</option>
-                                @foreach ($anggota as $a)
-                                <option value="{{ $a->id }}">{{ $a->nama . '-' . $a->nik}}</option>
-                                @endforeach
-                            </select>
-                        </div>
                     </div>
 
                     <div class="row g-4">

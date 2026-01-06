@@ -22,6 +22,7 @@ $(function () {
                     searchable: false,
                 },
                 { data: "no_transaksi", name: "no_transaksi" },
+                { data: "anggota_id", name: "anggota.name" },
                 {
                     data: "tanggal",
                     name: "tanggal",
@@ -133,6 +134,7 @@ $(function () {
             $("#kategori").val(data.kategori);
             $("#jumlah").val(data.jumlah);
             $("#keterangan").val(data.keterangan);
+            $("#anggota_id").val(data.anggota_id);
 
             $("#exampleModalLabel5").text("Edit Anggota");
             $("#animationModal").modal("show");
