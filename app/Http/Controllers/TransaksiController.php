@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Pest\Support\Str;
 use App\Models\Transaksi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
 
 class TransaksiController extends Controller
@@ -18,13 +20,21 @@ class TransaksiController extends Controller
 
     public function getData()
     {
-        $anggota = Transaksi::query()->orderBy('created_at', 'desc');
+        $anggota = Transaksi::with('user')->orderBy('created_at', 'desc');
 
         return DataTables::of($anggota)
             ->addIndexColumn()
 
+            ->editColumn('user_id', function ($row) {
+                return $row->user->name ?? '-';
+            })
+
+            ->editColumn('jumlah', function ($row) {
+                return 'Rp ' . number_format($row->jumlah, 0, ',', '.');
+            })
+
             ->addColumn('aksi', function ($row) {
-                $updateUrl = route('anggota.update', $row->id);
+                $updateUrl = route('transaksi.update', $row->id);
                 return '
                 <div class="d-flex gap-1">
                     <button class="btn btn-warning btn-sm editBtn"
@@ -43,43 +53,91 @@ class TransaksiController extends Controller
             ->make(true);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $noTransaksi = 'TRX-' . date('Ymd') . '-' . strtoupper(Str::random(6));
+
+        $request->validate([
+            'tanggal' => 'required|date_format:Y-m-d',
+            'jenis' => 'required|in:pengeluaran,pemasukan',
+            'kategori' => 'required|in:simpanan,pinjaman,angsuran,operasional',
+            'jumlah' => 'required|numeric|min:0',
+            'keterangan' => 'required|string|max:255',
+        ]);
+
+        $data = $request->only([
+            'tanggal',
+            'jenis',
+            'kategori',
+            'jumlah',
+            'keterangan'
+        ]);
+
+        $data['no_transaksi'] = $noTransaksi;
+        $data['user_id'] = Auth::id();
+
+        $anggota = Transaksi::create($data);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data berhasil ditambahkan',
+            'data' => $anggota
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Transaksi $transaksi)
+    public function show($id)
     {
-        //
+        $anggota = Transaksi::findOrFail($id);
+
+        return response()->json([
+            'status' => true,
+            'data' => $anggota
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Transaksi $transaksi)
+    public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'tanggal' => 'sometimes|required|date_format:Y-m-d',
+            'jenis' => 'sometimes|required|in:pemasukan,pengeluaran',
+            'kategori' => 'sometimes|required|in:pinjaman,angsuran,simpanan,operasional',
+            'jumlah' => 'sometimes|required|numeric|min:0',
+            'keterangan' => 'sometimes|required|string|max:255',
+        ]);
+
+        $anggota = Transaksi::findOrFail($id);
+
+        $data = array_filter(
+            $request->only([
+                'tanggal',
+                'jenis',
+                'kategori',
+                'jumlah',
+                'keterangan',
+            ]),
+            fn($v) => $v !== null
+        );
+
+        $data['user_id'] = Auth::id();
+
+        $anggota->update($data);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data berhasil diperbarui',
+            'data' => $anggota
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Transaksi $transaksi)
+    public function destroy($id)
     {
-        //
-    }
+        $anggota = Transaksi::findOrFail($id);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Transaksi $transaksi)
-    {
-        //
+        $anggota->delete();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Data berhasil dihapus'
+        ]);
     }
 }

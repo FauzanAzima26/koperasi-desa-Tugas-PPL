@@ -1,7 +1,7 @@
 <!-- Modal -->
 <div class="modal fade animate__animated animate__jackInTheBox" id="animationModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <form id="formInput" enctype="multipart/form-data" data-store="{{ route('anggota.store') }}">
+        <form id="formInput" enctype="multipart/form-data" data-store="{{ route('transaksi.store') }}">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -14,50 +14,47 @@
 
                     <div class="row">
                         <div class="col mb-4">
-                            <label for="nameAnimation" class="form-label">NIK</label>
-                            <input type="text" id="nik" name="nik" class="form-control"
-                                placeholder="Masukan NIK" />
+                            <label for="nameAnimation" class="form-label">Tanggal</label>
+                            <input type="date" id="tanggal" name="tanggal" class="form-control" />
                         </div>
                     </div>
 
                     <div class="row g-4">
                         <div class="col mb-0">
-                            <label for="emailAnimation" class="form-label">Nama</label>
-                            <input type="text" id="nama" name="nama" class="form-control"
-                                placeholder="Masukan nama" />
+                            <label for="jenis" class="form-label">Jenis</label>
+                            <select name="jenis" id="jenis" class="form-select" required>
+                                <option value="">-- Pilih Jenis --</option>
+                                <option value="pemasukan">Pemasukan</option>
+                                <option value="pengeluaran">Pengeluaran</option>
+                            </select>
                         </div>
                         <div class="col mb-0">
-                            <label for="dobAnimation" class="form-label">Usia</label>
-                            <input type="number" id="usia" name="usia" class="form-control"
-                                placeholder="Masukan usia" />
+                            <label for="kategori" class="form-label">Kategori</label>
+                            <select name="kategori" id="kategori" class="form-select" required>
+                                <option value="">-- Pilih kategori --</option>
+                                <option value="simpanan">Simpanan</option>
+                                <option value="pinjaman">Pinjaman</option>
+                                <option value="angsuran">Angsuran</option>
+                                <option value="operasional">Operasional</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="row mt-5">
                         <div class="col mb-0">
-                            <label class="d-block form-label">Jenis Kelamin</label>
-                            <div class="form-check mb-2">
-                                <input type="radio" name="jenis_kelamin" id="jk_l" class="form-check-input"
-                                    value="L" checked />
-                                <label class="form-check-label" for="basic-default-radio-male">Laki-Laki</label>
+                            <label for="jumlah" class="form-label">Nominal</label>
+                            <div class="input-group input-group-merge">
+                                <span id="basic-icon-default-fullname2" class="input-group-text">Rp</span>
+                                <input type="number" id="jumlah" name="jumlah" step="0.01" class="form-control rupiah"
+                                    placeholder="Masukan nominal" />
                             </div>
-                            <div class="form-check">
-                                <input type="radio" name="jenis_kelamin" id="jk_p" class="form-check-input"
-                                    value="P" />
-                                <label class="form-check-label" for="basic-default-radio-female">Perempuan</label>
-                            </div>
-                        </div>
-                        <div class="col mb-0">
-                            <label for="emailAnimation" class="form-label">Pekerjaan</label>
-                            <input type="text" id="pekerjaan" name="pekerjaan" class="form-control"
-                                placeholder="Masukan pekerjaan" />
                         </div>
                     </div>
 
                     <div class="row g-4">
                         <div class="col mb-0">
-                            <label for="dobAnimation" class="form-label">Alamat</label>
-                            <textarea name="alamat" id="alamat" class="form-control" rows="5"></textarea>
+                            <label for="dobAnimation" class="form-label">Keterangan</label>
+                            <textarea name="keterangan" id="keterangan" class="form-control" rows="5"></textarea>
                         </div>
                     </div>
 

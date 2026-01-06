@@ -17,9 +17,8 @@ return new class extends Migration
             $table->date('tanggal');
             $table->enum('jenis', ['pemasukan', 'pengeluaran']);
             $table->enum('kategori', ['simpanan', 'pinjaman', 'angsuran', 'operasional']);
-            $table->decimal('jumlah');
+            $table->decimal('jumlah', 15, 2);
             $table->foreignId('user_id')->constrained()->restrictOnDelete();
-            $table->foreignId('anggota_id')->constrained('anggota')->restrictOnDelete()->nullable();
             $table->text('keterangan');
             $table->timestamps();
         });
