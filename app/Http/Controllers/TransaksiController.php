@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Anggota;
 use Pest\Support\Str;
 use App\Models\Transaksi;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Logging\OpenTestReporting\Status;
 use Yajra\DataTables\Facades\DataTables;
 
 class TransaksiController extends Controller
@@ -142,6 +144,7 @@ class TransaksiController extends Controller
 
     public function destroy($id)
     {
+
         $anggota = Transaksi::findOrFail($id);
 
         $anggota->delete();

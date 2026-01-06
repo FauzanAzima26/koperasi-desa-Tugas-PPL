@@ -149,8 +149,8 @@ $(function () {
         let id = $(this).data("id");
 
         Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
+            title: "Apakah kamu yakin?",
+            text: "Kamu tidak dapat mengembalikan data ini setelah dihapus!",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Yes, delete it!",
@@ -198,6 +198,8 @@ $(function () {
                     error: function (xhr) {
                         Swal.fire({
                             title: "Error",
+                            showConfirmButton: false,
+                            showCloseButton: true,
                             text:
                                 xhr.responseJSON?.message ||
                                 "Terjadi kesalahan",

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Anggota;
 use Illuminate\Http\Request;
+use Illuminate\Database\QueryException;
 use Yajra\DataTables\Facades\DataTables;
 
 class AnggotaController extends Controller
@@ -129,13 +130,27 @@ class AnggotaController extends Controller
 
     public function destroy($id)
     {
-        $anggota = Anggota::findOrFail($id);
+        try {
+            $anggota = Anggota::findOrFail($id);
 
-        $anggota->delete();
+            $anggota->delete();
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Data berhasil dihapus'
-        ]);
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil dihapus'
+            ]);
+        } catch (QueryException $e) {
+            if ($e->getCode() == 23000) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data tidak dapat dihapus karena masih memiliki transaksi'
+                ], 422);
+            }
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Terjadi kesalahan server'
+            ], 500);
+        }
     }
 }
